@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>JstMyRB — Debanjan Kakati (BITS Pilani)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="logo-container" id="logo-home-btn" style="cursor:pointer;" title="Return to Home Hub">
+      <span class="logo-badge">JST</span>
+      <div>
+        <div class="app-title">JstMyRB</div>
+      </div>
+    </div>
+
+    <!-- Top View Switcher Navigation -->
+    <nav class="app-nav-tabs">
+      <button id="nav-btn-hub" class="app-nav-btn active">
+        🏠 Home Hub
+      </button>
+      <button id="nav-btn-builder" class="app-nav-btn">
+        📄 Resume Builder
+      </button>
+      <button id="nav-btn-vault" class="app-nav-btn">
+        🗄️ Storage Vault
+      </button>
+      <button id="nav-btn-tracker" class="app-nav-btn">
+        📊 CRM Kanban
+      </button>
+      <button id="nav-btn-cover" class="app-nav-btn">
+        ✉️ Cover Letter
+      </button>
+    </nav>
+
+    <div class="header-actions">
+      <!-- Multi-LLM Status / Settings -->
+      <button id="btn-open-llm-settings" class="btn btn-secondary" title="Configure AI Providers (Gemini, Claude, GPT-4o, Ollama)">
+        <span id="hdr-llm-dot">⚪</span>
+        <span id="hdr-llm-text">Multi-LLM Engine</span>
+      </button>
+
+      <!-- Quick Add to Storage -->
+      <button id="btn-open-vault" class="btn btn-primary">
+        + Add Record
+      </button>
+    </div>
+  </header>
+
+  <!-- Starting / Landing Page: Home Hub Command Center -->
+  <main id="view-home-hub" class="home-hub-layout">
+    <div class="hub-hero">
+      <div class="hub-hero-badge">BITS Pilani • Chemical (Hons.) + Finance Minor</div>
+      <h1 class="hub-hero-title">Where would you like to go today?</h1>
+      <p class="hub-hero-desc">
+        Welcome, Debanjan. Select a dedicated workspace below to tailor 1-page resumes, explore your career vault, manage application pipelines, or formulate executive cover letters.
+      </p>
+    </div>
+
+    <div class="hub-platform-grid">
+      <!-- 1. Resume Builder Card -->
+      <div class="hub-card card-builder" data-view="builder">
+        <div class="hub-card-header">
+          <div>
+            <div class="hub-card-tagline tagline-indigo">Jane Street Spec • 1-Page Fit</div>
+            <div class="hub-card-title">📄 1-Page Resume Builder</div>
+          </div>
+          <div class="hub-card-icon-box icon-box-indigo">📄</div>
+        </div>
+        <p class="hub-card-body">
+          Tailor elite 1-page resumes for Quant, AI/ML, SDE, Product, Finance, and Chemical roles. Real-time canvas preview, 1/2/3 point tiers, and Google XYZ bullet polishing.
+        </p>
+        <div class="hub-card-pills">
+          <span class="hub-pill">1-Page Guaranteed</span>
+          <span class="hub-pill">1/2/3 Pt Tiers</span>
+          <span class="hub-pill">PDF & LaTeX Export</span>
+          <span class="hub-pill">BM25 Retrieval</span>
+        </div>
+        <div class="hub-card-action">
+          <button class="hub-action-btn hub-btn-indigo">Launch Resume Builder →</button>
+        </div>
+      </div>
+
+      <!-- 2. Storage Vault Card -->
+      <div class="hub-card card-vault" data-view="vault">
+        <div class="hub-card-header">
+          <div>
+            <div class="hub-card-tagline tagline-gold">Centralized Career Database</div>
+            <div class="hub-card-title">🗄️ Storage Vault Workspace</div>
+          </div>
+          <div class="hub-card-icon-box icon-box-gold">🗄️</div>
+        </div>
+        <p class="hub-card-body">
+          Centralized SQLite database of all 14+ technical projects, Shell & PIEDS internships, skills catalog, patents, coursework, and awards with editable 1/2/3 point variations.
+        </p>
+        <div class="hub-card-pills">
+          <span class="hub-pill">SQLite Powered</span>
+          <span class="hub-pill">Full CRUD & Diffs</span>
+          <span class="hub-pill">Points Variations</span>
+          <span class="hub-pill">Search & Filters</span>
+        </div>
+        <div class="hub-card-action">
+          <button class="hub-action-btn hub-btn-gold">Open Storage Vault →</button>
+        </div>
+      </div>
+
+      <!-- 3. CRM Kanban Card -->
+      <div class="hub-card card-crm" data-view="tracker">
+        <div class="hub-card-header">
+          <div>
+            <div class="hub-card-tagline tagline-cyan">Recruitment Lifecycle</div>
+            <div class="hub-card-title">📊 Application CRM Kanban</div>
+          </div>
+          <div class="hub-card-icon-box icon-box-cyan">📊</div>
+        </div>
+        <p class="hub-card-body">
+          Track target applications across 6 recruitment stages: Wishlist → Applied → OA → Interview → Offer. Automatically link tailored resume snapshots to application cards.
+        </p>
+        <div class="hub-card-pills">
+          <span class="hub-pill">Funnel Metrics</span>
+          <span class="hub-pill">Stage Advance</span>
+          <span class="hub-pill">Resume Snapshots</span>
+          <span class="hub-pill">Interview Notes</span>
+        </div>
+        <div class="hub-card-action">
+          <button class="hub-action-btn hub-btn-cyan">Open CRM Kanban →</button>
+        </div>
+      </div>
+
+      <!-- 4. Cover Letter Studio Card -->
+      <div class="hub-card card-cover" data-view="cover">
+        <div class="hub-card-header">
+          <div>
+            <div class="hub-card-tagline tagline-emerald">Executive Correspondence</div>
+            <div class="hub-card-title">✉️ Cover Letter Studio</div>
+          </div>
+          <div class="hub-card-icon-box icon-box-emerald">✉️</div>
+        </div>
+        <p class="hub-card-body">
+          Synthesize compelling 1-page executive cover letters matching Jane Street serif typography with hyper-personalized technical accomplishments and instant PDF printing.
+        </p>
+        <div class="hub-card-pills">
+          <span class="hub-pill">Multi-LLM Synthesis</span>
+          <span class="hub-pill">Jane Street Style</span>
+          <span class="hub-pill">Instant PDF Print</span>
+          <span class="hub-pill">CRM Integration</span>
+        </div>
+        <div class="hub-card-action">
+          <button class="hub-action-btn hub-btn-emerald">Draft Cover Letter →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Integrations & Status Ribbon -->
+    <div class="hub-footer-ribbon">
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <span style="font-size:12px; font-weight:700; color:#fff;">⚡ Quick Integrations:</span>
+        <button id="btn-hub-github" class="btn btn-secondary btn-sm">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Sync (DEBANJAN-KAKATI)
+        </button>
+        <button id="btn-hub-linkedin" class="btn btn-secondary btn-sm">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          LinkedIn Profile Sync
+        </button>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button id="btn-hub-ats" class="ats-score-badge elite" title="ATS Parseability Score">
+          <span id="hub-ats-val">94</span>/100 ATS Ready
+        </button>
+        <span class="pill-badge badge-green">✓ SQLite Active</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Resume Builder View Layout -->
+  <main id="view-resume-builder" class="main-layout" style="display:none;">
+
+    <!-- Mobile Subview Toggle Bar (Phone Only) -->
+    <div class="mobile-subview-switcher" id="builder-mobile-switcher">
+      <button id="btn-m-builder-edit" class="m-switch-btn active">✏️ Tailor & Edit</button>
+      <button id="btn-m-builder-preview" class="m-switch-btn">👁️ 1-Page Preview</button>
+    </div>
+
+    <!-- Left Controls Sidebar -->
+    <aside class="sidebar-panel">
+
+      <!-- Mode Selector -->
+      <div class="tab-row">
+        <button id="tab-ai-mode" class="tab-btn active">⚡ AI Tailor Mode</button>
+        <button id="tab-offline-mode" class="tab-btn">🛠️ Offline Custom Mode</button>
+      </div>
+
+      <!-- AI Target Company & Role Section -->
+      <section id="sec-ai-inputs" class="panel-section">
+        <div class="section-title">
+          <span>Target Company & Role Thinking</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <input type="text" id="target-company" class="input-box" placeholder="Company (e.g. Jane Street, Shell, Google)...">
+          <input type="text" id="target-role" class="input-box" placeholder="Role (e.g. Quant Trader, SDE)...">
+        </div>
+        <textarea id="target-jd" class="input-box" rows="3" placeholder="Paste target Job Description (JD) here to let the AI think and tailor..."></textarea>
+        <div style="display:flex; gap:6px;">
+          <button id="btn-ai-think" class="btn btn-primary" style="flex:1; justify-content: center;">
+            ⚡ AI Think & Tailor 1-Page
+          </button>
+          <button id="btn-parse-jd" class="btn btn-secondary" style="justify-content: center;" title="Extract hard skills and perform gap analysis vs vault">
+            🔍 Parse JD
+          </button>
+        </div>
+
+        <div id="jd-gap-analysis-container" style="display:none;" class="ai-reasoning-card">
+          <!-- Populated with JD match score, matched and missing skills -->
+        </div>
+
+        <div id="ai-reasoning-container" style="display:none;" class="ai-reasoning-card">
+          <!-- Populated with Gemini strategic rationale -->
+        </div>
+
+        <button id="btn-save-to-crm" class="btn btn-gold btn-sm" style="justify-content: center; width: 100%;">
+          📌 Log Current Version to Application CRM
+        </button>
+      </section>
+
+      <!-- Offline Custom Mode Section -->
+      <section id="sec-offline-inputs" class="panel-section" style="display:none;">
+        <div class="section-title">
+          <span>Role Category Filter</span>
+          <span style="font-size:11px; color:var(--accent-gold);">Offline Suggestions</span>
+        </div>
+        <input type="text" id="offline-role-input" class="input-box" placeholder="Type role type: finance, ai, ds, sde, chemical, product...">
+        <div style="display:flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;">
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="finance">Finance</button>
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="ai">AI / ML</button>
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="sde">SDE / Systems</button>
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="ds">Data Science</button>
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="chemical">Chemical & Shell</button>
+          <button class="btn btn-secondary btn-sm quick-role-btn" data-role="product">Product</button>
+        </div>
+      </section>
+
+      <!-- 1-Page Typography & Density Customizer -->
+      <section class="panel-section">
+        <div class="section-title">
+          <span>Typography & Page Crease Controls</span>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Font Size: <b id="lbl-font-size" style="color:#fff;">9.5pt</b></label>
+            <input type="range" id="slider-font-size" min="9.0" max="10.2" step="0.1" value="9.5" style="width:100%;">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Line Spacing: <b id="lbl-line-height" style="color:#fff;">1.15</b></label>
+            <input type="range" id="slider-line-height" min="1.10" max="1.24" step="0.01" value="1.15" style="width:100%;">
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Skills with + Add from Vault Button -->
+      <section class="panel-section">
+        <div class="section-title">
+          <span>Active Skills in Resume</span>
+          <button id="btn-add-skill-from-vault" class="section-add-btn">+ Add from Vault</button>
+        </div>
+        <div id="active-skills-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Dynamically generated with Edit and Remove buttons -->
+        </div>
+      </section>
+
+      <!-- Interactive Projects with 1/2/3 Point Tiers & + Add from Vault Button -->
+      <section class="panel-section">
+        <div class="section-title">
+          <span>Active Projects in Resume</span>
+          <button id="btn-add-proj-from-vault" class="section-add-btn">+ Add from Vault</button>
+        </div>
+        <div id="active-projects-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Dynamically generated with 1/2/3 point tier buttons -->
+        </div>
+      </section>
+
+      <!-- Interactive Experiences with 1/2/3 Point Tiers & + Add from Vault Button -->
+      <section class="panel-section">
+        <div class="section-title">
+          <span>Active Experiences</span>
+          <button id="btn-add-exp-from-vault" class="section-add-btn">+ Add from Vault</button>
+        </div>
+        <div id="active-experiences-list" style="display: flex; flex-direction: column; gap: 8px;">
+          <!-- Dynamically generated with 1/2/3 point tier buttons -->
+        </div>
+      </section>
+
+      <!-- Mobile Jump to Preview Button -->
+      <div class="mobile-jump-wrapper">
+        <button id="btn-m-jump-preview" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+          👁️ Switch to 1-Page Live Preview →
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- Right Live Preview Canvas -->
+    <section class="preview-panel">
+      <!-- Toolbar -->
+      <div class="preview-toolbar">
+        <div style="display:flex; align-items:center; gap: 8px; flex-wrap: wrap;">
+          <button class="back-to-hub-btn btn-back-hub">← Hub</button>
+          <button id="btn-m-back-editor" class="btn btn-secondary btn-sm mobile-only-btn">✏️ Edit</button>
+          <span id="page-fit-gauge" class="pill-badge badge-green">✓ 1-Page Guaranteed</span>
+          <button id="btn-open-ats" class="ats-score-badge elite" title="Click to view ATS Score & Recommendations">
+            <span id="hdr-ats-score">94</span>/100 ATS Ready
+          </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap: 6px; flex-wrap: wrap;">
+          <span style="font-size:12px; color:var(--text-muted);">Zoom:</span>
+          <button id="btn-zoom-out" class="btn btn-secondary btn-sm">−</button>
+          <button id="btn-zoom-in" class="btn btn-secondary btn-sm">+</button>
+          <button id="btn-zoom-fit" class="btn btn-secondary btn-sm" title="Auto-fit page to screen width">Fit</button>
+          <span id="zoom-value" style="font-size:11px; color:var(--text-muted);">100%</span>
+        </div>
+
+        <div style="display:flex; gap: 6px;">
+          <button id="btn-download-tex" class="btn btn-secondary btn-sm">
+            📄 LaTeX
+          </button>
+          <button id="btn-download-html" class="btn btn-secondary btn-sm">
+            🌐 HTML
+          </button>
+          <button id="btn-print-pdf" class="btn btn-primary btn-sm">
+            🖨️ Print PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Paper Sheet Container with 1-Page Crease Line -->
+      <div class="paper-wrapper">
+        <div id="paper-sheet" class="paper-sheet-container">
+          
+          <!-- Exact 1-Page Crease Line Boundary -->
+          <div id="crease-line" class="page-crease-line">
+            <span class="page-crease-tag">1-Page Crease Line</span>
+          </div>
+
+          <iframe id="resume-frame" title="Resume Live Canvas"></iframe>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Dedicated Storage Vault View (Different Part of Web App) -->
+  <main id="view-storage-vault" class="vault-view-layout" style="display:none;">
+    <!-- Vault Hero Bar -->
+    <div class="vault-hero-bar">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <h2 style="font-size:18px; font-weight:800; color:#fff;">🗄️ Storage Vault Workspace</h2>
+          <span id="vault-total-count-badge" class="pill-badge badge-gold">Loading records...</span>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+          Centralized career database of all your projects, internship experiences, skills catalog, patents, coursework, and awards with 1/2/3 point tiers.
+        </p>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <button class="back-to-hub-btn btn-back-hub">← Back to Hub</button>
+        <button id="btn-page-add-proj" class="btn btn-primary btn-sm">+ Add Project (1/2/3 Pts)</button>
+        <button id="btn-page-add-exp" class="btn btn-secondary btn-sm">+ Add Experience</button>
+        <button id="btn-page-add-skill-cat" class="btn btn-secondary btn-sm">+ Add Skill Category</button>
+        <button id="btn-page-add-award" class="btn btn-secondary btn-sm">+ Add Award / POR</button>
+        <button id="btn-switch-to-builder" class="btn btn-gold btn-sm">📄 Resume Canvas</button>
+      </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+      <div style="flex:1; min-width:280px;">
+        <input type="text" id="dedicated-vault-search" class="input-box" placeholder="🔍 Search projects, skills, companies, keywords, tags, or bullet text...">
+      </div>
+
+      <div class="vault-category-chips" id="dedicated-vault-chips">
+        <button class="vault-chip-btn active" data-sec="all">All Records</button>
+        <button class="vault-chip-btn" data-sec="projects">📁 Projects (1/2/3 Pts)</button>
+        <button class="vault-chip-btn" data-sec="experiences">🏢 Experiences</button>
+        <button class="vault-chip-btn" data-sec="skills">🏷️ Skills Catalog</button>
+        <button class="vault-chip-btn" data-sec="patents_certifications">📜 Patents & Certs</button>
+        <button class="vault-chip-btn" data-sec="pors_achievements">🏆 POR & Achievements</button>
+        <button class="vault-chip-btn" data-sec="awards_medals">🎖️ Awards & Medals</button>
+        <button class="vault-chip-btn" data-sec="coursework">📚 Coursework</button>
+      </div>
+    </div>
+
+    <!-- Main Vault Cards Grid -->
+    <div id="dedicated-vault-grid" class="vault-grid">
+      <!-- Dynamically populated with all stored items -->
+    </div>
+  </main>
+
+  <!-- Application Lifecycle CRM & Kanban View -->
+  <main id="view-application-tracker" class="tracker-view-layout" style="display:none;">
+    <div class="vault-hero-bar">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <h2 style="font-size:18px; font-weight:800; color:#fff;">📊 Application Lifecycle CRM</h2>
+          <span id="tracker-total-badge" class="pill-badge badge-cyan">0 Total Applications</span>
+        </div>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+          Track target applications across recruitment stages, linked to tailored resume versions and interview notes.
+        </p>
+      </div>
+
+      <div class="kanban-metrics-strip" id="tracker-metrics-container">
+        <button class="back-to-hub-btn btn-back-hub" style="align-self:center;">← Back to Hub</button>
+        <div class="metric-card">
+          <span class="metric-val" id="metric-total-apps">0</span>
+          <span class="metric-lbl">Total Applied</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val" id="metric-interview-rate" style="color:var(--accent-cyan);">0%</span>
+          <span class="metric-lbl">Interview Rate</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-val" id="metric-offer-rate" style="color:var(--accent-emerald);">0%</span>
+          <span class="metric-lbl">Offer Rate</span>
+        </div>
+        <button id="btn-add-tracker-app" class="btn btn-primary btn-sm" style="align-self:center;">+ Add Application</button>
+      </div>
+    </div>
+
+    <!-- Kanban Columns Grid -->
+    <div class="kanban-board" id="kanban-board-container">
+      <!-- 6 stages rendered dynamically: Wishlist, Applied, OA, Interview, Offer, Rejected -->
+    </div>
+  </main>
+
+  <!-- Cover Letter Studio View -->
+  <main id="view-cover-letter" class="cover-letter-layout" style="display:none;">
+
+    <!-- Mobile Subview Toggle Bar (Phone Only) -->
+    <div class="mobile-subview-switcher" id="cover-mobile-switcher">
+      <button id="btn-m-cover-edit" class="m-switch-btn active">✏️ Draft Letter</button>
+      <button id="btn-m-cover-preview" class="m-switch-btn">👁️ Live Preview</button>
+    </div>
+
+    <!-- Left Configuration Panel -->
+    <aside class="sidebar-panel" style="overflow-y:auto;">
+      <div class="section-title">
+        <span>Target Application & Angle</span>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <input type="text" id="cl-target-company" class="input-box" placeholder="Target Company (e.g. Jane Street, Shell, Citadel)...">
+        <input type="text" id="cl-target-role" class="input-box" placeholder="Target Role (e.g. Quantitative Trader, Systems SDE)...">
+        <textarea id="cl-target-jd" class="input-box" rows="8" placeholder="Paste target Job Description here to hyper-tailor technical accomplishments and cultural alignment..."></textarea>
+        
+        <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text-muted); cursor:pointer;">
+          <input type="checkbox" id="cl-use-llm" checked>
+          <span>Use Multi-LLM Hyper-Tailoring (High-Impact Synthesis)</span>
+        </label>
+
+        <button id="btn-gen-cover-letter" class="btn btn-primary" style="justify-content:center; padding:10px;">
+          ⚡ Generate Tailored Cover Letter
+        </button>
+
+        <button id="btn-cl-link-tracker" class="btn btn-gold btn-sm" style="justify-content:center;">
+          📌 Save Letter to Application CRM
+        </button>
+
+        <!-- Mobile Jump Button -->
+        <div class="mobile-jump-wrapper" style="margin-top: 10px;">
+          <button id="btn-m-jump-cl-preview" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+            👁️ Switch to Letter Preview →
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Live Preview Panel -->
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap: wrap;">
+          <button class="back-to-hub-btn btn-back-hub">← Hub</button>
+          <button id="btn-m-back-cl-editor" class="btn btn-secondary btn-sm mobile-only-btn">✏️ Edit</button>
+          <span style="font-size:12px; font-weight:700; color:#fff;">Jane Street Style 1-Page Cover Letter</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button id="btn-cl-copy-text" class="btn btn-secondary">📋 Copy Plaintext</button>
+          <button id="btn-cl-download-html" class="btn btn-secondary">🌐 Download HTML</button>
+          <button id="btn-cl-print-pdf" class="btn btn-primary">🖨️ Print / Save PDF</button>
+        </div>
+      </div>
+      <div class="paper-wrapper">
+        <div id="cl-paper-sheet" class="paper-sheet-container" style="min-height: 1122px;">
+          <iframe id="cover-letter-frame" title="Cover Letter Canvas" style="width:100%; height:1122px; border:none;"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <!-- Modal: Gemini API Key -->
+  <div id="modal-api-key" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">Google Gemini API Key</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted);">
+          Enter your Gemini API key to activate strategic thinking, automatic JD project matching, and 1/2/3 bullet synthesis. It is kept secure and private.
+        </p>
+        <input type="password" id="input-gemini-key" class="input-box" placeholder="AIzaSy...">
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-save-api-key" class="btn btn-primary">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: GitHub Sync -->
+  <div id="modal-github" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">GitHub Projects Sync (DEBANJAN-KAKATI)</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body" id="github-repos-container">
+        <!-- Dynamically loaded with 1/2/3 point tiers -->
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: LinkedIn Sync -->
+  <div id="modal-linkedin" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">LinkedIn Sync</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted);">
+          Paste text from your profile <b>https://www.linkedin.com/in/debanjan-kakati-5517891b7/</b> (or upload a LinkedIn PDF export):
+        </p>
+        <textarea id="li-text-input" class="input-box" rows="7" placeholder="Paste experience / project text..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-sync-li-submit" class="btn btn-primary">Sync to Storage</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Storage Vault -->
+  <div id="modal-vault" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">Day-by-Day Storage Vault</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Add Skill -->
+        <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+          <div style="font-size: 12px; font-weight:700; margin-bottom: 6px; color: var(--accent-cyan);">+ Add New Skill</div>
+          <div style="display:flex; gap: 8px;">
+            <select id="v-skill-cat" class="input-box" style="flex:1;">
+              <option value="programming">Programming</option>
+              <option value="ai_ml">AI & ML</option>
+              <option value="frameworks_web">Frameworks & Web</option>
+              <option value="quant_methods">Quant Methods</option>
+              <option value="data_systems">Data & Systems</option>
+              <option value="chemical_engineering">Chemical Engineering</option>
+            </select>
+            <input type="text" id="v-skill-val" class="input-box" style="flex:2;" placeholder="e.g. PyTorch Lightning, WebAssembly...">
+            <button id="btn-v-add-skill" class="btn btn-primary btn-sm">Add</button>
+          </div>
+        </div>
+
+        <!-- Add Project with 1/2/3 Points -->
+        <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+          <div style="font-size: 12px; font-weight:700; margin-bottom: 6px; color: var(--accent-gold);">+ Add New Project (1/2/3 Point Tiers)</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <input type="text" id="v-proj-title" class="input-box" placeholder="Project Title">
+            <input type="text" id="v-proj-context" class="input-box" placeholder="Context / Affiliation / Tech Stack">
+            <textarea id="v-proj-pt1" class="input-box" rows="2" placeholder="Point 1 (Core Architecture & High-impact metric)"></textarea>
+            <textarea id="v-proj-pt2" class="input-box" rows="2" placeholder="Point 2 (Algorithms / Data pipeline / Scale)"></textarea>
+            <textarea id="v-proj-pt3" class="input-box" rows="2" placeholder="Point 3 (Production testing / Benchmark / Latency)"></textarea>
+            <input type="text" id="v-proj-tags" class="input-box" placeholder="Tags: quant, ai_ml, full_stack, chemical, finance, product">
+            <button id="btn-v-add-proj" class="btn btn-primary btn-sm" style="align-self:flex-end;">Save Project to Vault</button>
+          </div>
+        </div>
+
+        <!-- Add Award / Medal / Achievement -->
+        <div>
+          <div style="font-size: 12px; font-weight:700; margin-bottom: 6px; color: var(--accent-emerald);">+ Add Award / Medal / POR</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <input type="text" id="v-award-title" class="input-box" placeholder="Title (e.g. Winner of National Hackathon)">
+            <input type="text" id="v-award-desc" class="input-box" placeholder="Details and Impact">
+            <button id="btn-v-add-award" class="btn btn-primary btn-sm" style="align-self:flex-end;">Save Award</button>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer Backdrop -->
+  <div id="drawer-backdrop" class="drawer-backdrop"></div>
+
+  <!-- Right-Side Slide-Out Drawer (Add from Vault) -->
+  <div id="side-drawer" class="side-drawer">
+    <div class="drawer-header">
+      <div>
+        <h3 id="drawer-title" style="font-size:15px; font-weight:700;">Add Item from Storage Vault</h3>
+        <div id="drawer-subtitle" style="font-size:11px; color:var(--text-muted);">Select an item to insert into resume</div>
+      </div>
+      <button id="btn-close-drawer" class="btn btn-secondary btn-sm" title="Close Panel">&times;</button>
+    </div>
+    
+    <!-- Quick Type Navigation inside Drawer -->
+    <div class="drawer-tabs">
+      <button class="drawer-tab-btn active" data-type="skills">🏷️ Skills</button>
+      <button class="drawer-tab-btn" data-type="projects">📁 Projects</button>
+      <button class="drawer-tab-btn" data-type="experiences">🏢 Experiences</button>
+      <button class="drawer-tab-btn" data-type="create_new">➕ Create New</button>
+    </div>
+
+    <div style="padding: 10px 20px 0 20px;">
+      <input type="text" id="drawer-search" class="input-box" placeholder="Search storage items...">
+    </div>
+    <div class="drawer-body" id="drawer-items-list">
+      <!-- Dynamically populated with items from storage vault not currently in resume -->
+    </div>
+    <div class="drawer-footer">
+      <button id="btn-drawer-cancel" class="btn btn-secondary">Close Panel</button>
+    </div>
+  </div>
+
+  <!-- Modal: Storage Vault Explorer (Look into Storage Vault & Edit Anything) -->
+  <div id="modal-vault-explorer" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 800px; max-height: 90vh;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap: 10px;">
+          <h3 style="font-size:16px;">📂 Storage Vault Explorer</h3>
+          <span style="font-size:11px; color:var(--accent-gold);">(Browse, Edit, or Delete Any Record)</span>
+        </div>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div style="padding: 10px 18px 0 18px; display:flex; gap: 8px;">
+        <input type="text" id="vault-explorer-search" class="input-box" style="flex:1;" placeholder="Search across all projects, experiences, skills...">
+        <select id="vault-section-filter" class="input-box" style="width: 170px;">
+          <option value="all">All Sections</option>
+          <option value="projects">Projects</option>
+          <option value="experiences">Experiences</option>
+          <option value="skills">Skills</option>
+          <option value="coursework">Coursework</option>
+          <option value="patents_certifications">Patents & Certs</option>
+          <option value="pors_achievements">POR & Achievements</option>
+          <option value="awards_medals">Awards & Medals</option>
+        </select>
+      </div>
+      <div class="modal-body" id="vault-explorer-list" style="max-height: 62vh;">
+        <!-- Dynamically rendered with Edit and Delete buttons for each item -->
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Edit Item (Projects, Experiences, etc.) -->
+  <div id="modal-item-editor" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 id="editor-modal-title" style="font-size:15px;">✏️ Edit Storage Item</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-item-type">
+        <input type="hidden" id="edit-item-id">
+        
+        <div>
+          <label style="font-size:11px; color:var(--text-muted);">Title / Role</label>
+          <input type="text" id="edit-field-title" class="input-box">
+        </div>
+        
+        <div id="edit-context-wrapper">
+          <label id="edit-lbl-context" style="font-size:11px; color:var(--text-muted);">Context / Guide / Company</label>
+          <input type="text" id="edit-field-context" class="input-box">
+        </div>
+
+        <div id="edit-dates-wrapper" style="display:none; gap: 8px;">
+          <div style="flex:1;">
+            <label style="font-size:11px; color:var(--text-muted);">Duration</label>
+            <input type="text" id="edit-field-duration" class="input-box">
+          </div>
+          <div style="flex:1;">
+            <label style="font-size:11px; color:var(--text-muted);">Location</label>
+            <input type="text" id="edit-field-location" class="input-box">
+          </div>
+        </div>
+
+        <div id="edit-tiers-wrapper">
+          <label style="font-size:11px; color:var(--accent-primary); font-weight:700;">Point 1 (Single Power Bullet):</label>
+          <textarea id="edit-field-pt1" class="input-box" rows="2"></textarea>
+
+          <label style="font-size:11px; color:var(--accent-primary); font-weight:700; margin-top:6px; display:block;">Point 2 (Second Bullet):</label>
+          <textarea id="edit-field-pt2" class="input-box" rows="2"></textarea>
+
+          <label style="font-size:11px; color:var(--accent-primary); font-weight:700; margin-top:6px; display:block;">Point 3 (Third Bullet):</label>
+          <textarea id="edit-field-pt3" class="input-box" rows="2"></textarea>
+        </div>
+
+        <div>
+          <label style="font-size:11px; color:var(--text-muted);">Category Tags (comma-separated: quant, ai_ml, full_stack, chemical, finance, product)</label>
+          <input type="text" id="edit-field-tags" class="input-box">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-save-edited-item" class="btn btn-primary">Save Changes & Sync</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Edit / Add Skill Category in Vault -->
+  <div id="modal-skill-editor" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 id="skill-editor-title" style="font-size:15px;">✏️ Edit Skill Category in Vault</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-skill-orig-cat">
+        <div>
+          <label style="font-size:11px; color:var(--text-muted);">Category Identifier / Name</label>
+          <input type="text" id="edit-skill-cat-name" class="input-box" placeholder="e.g. Programming, AI & ML, Quant Methods">
+        </div>
+        <div style="margin-top:10px;">
+          <label style="font-size:11px; color:var(--text-muted);">Skills List (comma-separated):</label>
+          <textarea id="edit-skill-entries" class="input-box" rows="5" placeholder="Python, C++, PyTorch, Docker, React, FastAPI..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-save-edited-skill" class="btn btn-primary">Save Category & Sync</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Multi-LLM Provider & Cost Settings -->
+  <div id="modal-llm-settings" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">🧠 Multi-LLM Engine & API Router</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
+          Select your preferred AI intelligence provider. Automatic fallback and response caching are enabled across all runs.
+        </p>
+
+        <div style="margin-bottom:10px;">
+          <label style="font-size:11px; color:var(--text-muted); font-weight:700;">Active Provider:</label>
+          <select id="llm-pref-provider" class="input-box" style="margin-top:4px;">
+            <option value="auto">Auto (Auto-detect active provider with fallback)</option>
+            <option value="gemini">Google Gemini (Gemini 2.0 Flash / Pro)</option>
+            <option value="openai">OpenAI (GPT-4o / GPT-4o-mini)</option>
+            <option value="anthropic">Anthropic (Claude 3.5 Sonnet)</option>
+            <option value="ollama">Local Ollama (100% Offline / Llama 3.2)</option>
+          </select>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div>
+            <label style="font-size:11px; color:var(--accent-cyan);">Google Gemini API Key:</label>
+            <input type="password" id="input-llm-gemini-key" class="input-box" placeholder="AIzaSy...">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--accent-emerald);">OpenAI API Key (Optional):</label>
+            <input type="password" id="input-llm-openai-key" class="input-box" placeholder="sk-...">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--accent-gold);">Anthropic API Key (Optional):</label>
+            <input type="password" id="input-llm-anthropic-key" class="input-box" placeholder="sk-ant-...">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--accent-primary);">Local Ollama Endpoint (Zero internet required):</label>
+            <input type="text" id="input-llm-ollama-url" class="input-box" value="http://localhost:11434/api/generate">
+          </div>
+        </div>
+
+        <!-- Token Usage & Cost Log -->
+        <div style="margin-top:14px; background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:6px; padding:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:700; color:#fff;">
+            <span>Token Usage & Estimated Cost</span>
+            <span id="llm-total-cost-badge" class="pill-badge badge-green">$0.00 USD</span>
+          </div>
+          <div id="llm-usage-summary-text" style="font-size:11px; color:var(--text-muted); margin-top:4px;">
+            0 calls logged in SQLite cache.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-save-llm-settings" class="btn btn-primary">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: ATS Score Breakdown & Recommendations -->
+  <div id="modal-ats-breakdown" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <h3 style="font-size:15px;">⚡ ATS Parseability & Impact Score</h3>
+          <span id="ats-modal-grade" class="pill-badge badge-green">Grade A+ (Elite)</span>
+        </div>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; align-items:center; gap:16px; background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; border:1px solid var(--border-color);">
+          <div style="font-size:36px; font-weight:800; color:var(--accent-emerald);" id="ats-big-score">94</div>
+          <div>
+            <div style="font-size:13px; font-weight:700; color:#fff;" id="ats-status-title">Wall Street / Silicon Valley Ready</div>
+            <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+              Quantified metrics and strong action verbs ensure passing Taleo, Workday, and Greenhouse screening filters.
+            </p>
+          </div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600;">
+              <span>JD Keyword Match</span>
+              <span id="ats-val-kws">32 / 35</span>
+            </div>
+            <div class="ats-progress-bar"><div id="ats-fill-kws" class="ats-progress-fill green" style="width:90%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600;">
+              <span>Quantified Metrics & Bold Results</span>
+              <span id="ats-val-metrics">23 / 25</span>
+            </div>
+            <div class="ats-progress-bar"><div id="ats-fill-metrics" class="ats-progress-fill cyan" style="width:92%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600;">
+              <span>Active Power Verbs (XYZ Formula)</span>
+              <span id="ats-val-verbs">19 / 20</span>
+            </div>
+            <div class="ats-progress-bar"><div id="ats-fill-verbs" class="ats-progress-fill gold" style="width:95%;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:600;">
+              <span>Format & Section Completeness</span>
+              <span id="ats-val-format">20 / 20</span>
+            </div>
+            <div class="ats-progress-bar"><div id="ats-fill-format" class="ats-progress-fill indigo" style="width:100%;"></div></div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:6px;">Targeted Recommendations:</div>
+          <div id="ats-suggestions-list" style="display:flex; flex-direction:column; gap:6px; font-size:11px;">
+            <!-- Rendered recommendations -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Bullet Critic & XYZ Linter -->
+  <div id="modal-bullet-critic" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">✨ Bullet Quality Critic (Google XYZ Formula)</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="critic-item-id">
+        <input type="hidden" id="critic-bullet-idx">
+
+        <label style="font-size:11px; color:var(--text-muted);">Current Bullet Point:</label>
+        <div id="critic-original-bullet" style="background:rgba(255,255,255,0.04); border:1px solid var(--border-color); padding:10px; border-radius:6px; font-size:12px; font-family:'Times New Roman', serif; line-height:1.25; margin-top:4px;">
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+          <span style="font-size:11px; font-weight:700;">Critic Quality Score:</span>
+          <span id="critic-score-pill" class="pill-badge badge-green">85 / 100</span>
+          <span id="critic-xyz-badge" class="pill-badge badge-gold">✓ Google XYZ Compliant</span>
+        </div>
+
+        <div id="critic-feedback-list" style="margin-top:10px; display:flex; flex-direction:column; gap:4px; font-size:11px;">
+          <!-- Populated with strengths and issues -->
+        </div>
+
+        <div style="margin-top:16px; border-top:1px solid var(--border-color); padding-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label style="font-size:11px; font-weight:700; color:var(--accent-primary);">AI-Rewritten Google XYZ Bullet:</label>
+            <button id="btn-critic-rewrite-ai" class="btn btn-secondary btn-sm">⚡ Generate AI Rewrite</button>
+          </div>
+          <textarea id="critic-rewritten-box" class="input-box" rows="3" placeholder="Click 'Generate AI Rewrite' to formulate with quantified metrics and bold tags..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-critic-apply" class="btn btn-primary">Apply & Replace in Resume</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Quick Add to Application CRM -->
+  <div id="modal-tracker-add" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">📌 Add Application to CRM</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Company Name:</label>
+            <input type="text" id="tracker-add-company" class="input-box" placeholder="e.g. Jane Street, Shell, DE Shaw...">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Role Title:</label>
+            <input type="text" id="tracker-add-role" class="input-box" placeholder="e.g. Quantitative Trader, Systems SDE...">
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Initial Stage:</label>
+            <select id="tracker-add-stage" class="input-box">
+              <option value="Wishlist">Wishlist</option>
+              <option value="Applied" selected>Applied</option>
+              <option value="Online Assessment">Online Assessment</option>
+              <option value="Interview">Interview</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px; color:var(--text-muted);">Application Notes / Next Steps:</label>
+            <textarea id="tracker-add-notes" class="input-box" rows="3" placeholder="Applied via referral; OA deadline next Friday..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Cancel</button>
+        <button id="btn-tracker-submit-add" class="btn btn-primary">Save to CRM</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

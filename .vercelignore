@@ -1,0 +1,22 @@
+# Exclude heavy binaries, build caches, and private resumes from Vercel function bundle
+Resumes/
+output/
+*.pdf
+*.docx
+*.doc
+ResumeAgentPro.exe
+*.exe
+build/
+dist/
+*.spec
+*.pptx
+*.ppt
+__pycache__/
+*.pyc
+.git/
+.venv/
+scratch_extracted_pages.json
+scratch_extract.py
+ils_slides_text.txt
+github_repos.json
+Start_ResumeAgentPro.bat

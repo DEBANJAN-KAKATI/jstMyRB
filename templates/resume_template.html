@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ personal_info.name }} — Resume ({{ target_title }})</title>
+<style>
+  :root { color-scheme: light; }
+
+  @page {
+    size: A4;
+    margin: {{ margin_v | default('0.38in') }} {{ margin_h | default('0.48in') }};
+  }
+
+  html { background: #f0f0f0; }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: {{ font_size | default('9.5pt') }};
+    line-height: {{ line_height | default('1.15') }};
+    color: #000;
+    background: #fff;
+    margin: 0 auto;
+    padding: {{ margin_v | default('0.38in') }} {{ margin_h | default('0.48in') }};
+    max-width: 8.27in;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* ---------- header ---------- */
+  .name {
+    text-align: center;
+    font-size: 19pt;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    margin: 0 0 1px 0;
+  }
+  .contact {
+    text-align: center;
+    font-size: 9.2pt;
+    margin: 0 0 5px 0;
+  }
+  .contact a { color: #0645ad; text-decoration: underline; }
+
+  /* ---------- sections ---------- */
+  h2 {
+    font-size: 10.1pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin: 5px 0 2px 0;
+    padding: 0 0 1px 0;
+    border-bottom: 1.1px solid #000;
+  }
+
+  /* title row: left label, right-aligned date */
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 2.2px;
+  }
+  .row .l { font-weight: bold; }
+  .row .r { font-weight: bold; white-space: nowrap; }
+  .sub { display: flex; justify-content: space-between; gap: 10px; font-style: italic; }
+
+  /* first entry in a section shouldn't add extra gap */
+  h2 + .row, h2 + .line { margin-top: 1px; }
+
+  .line { margin: 2px 0 1px 0; }
+
+  ul {
+    margin: 1px 0 0 0;
+    padding-left: 14px;
+  }
+  li { margin: 0 0 1.2px 0; text-align: justify; }
+
+  .tight { margin-bottom: 0; }
+  b, strong { font-weight: bold; }
+
+  /* keep entries from splitting across pages */
+  .keep { break-inside: avoid; page-break-inside: avoid; }
+
+  @media print {
+    html { background: #fff; }
+    body { padding: 0; max-width: none; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="name">{{ personal_info.name }}</div>
+  <div class="contact">
+    <a href="mailto:{{ personal_info.email }}">{{ personal_info.email }}</a>
+    &nbsp;|&nbsp; {{ personal_info.phone }}
+    &nbsp;|&nbsp; <a href="{{ personal_info.linkedin }}" target="_blank">LinkedIn</a>
+    &nbsp;|&nbsp; <a href="{{ personal_info.github }}" target="_blank">GitHub</a>
+  </div>
+
+  <!-- ===================== EDUCATION ===================== -->
+  <h2>Education</h2>
+  {% for edu in education %}
+  <div class="row">
+    <span class="l">{{ edu.institution }}</span>
+    <span class="r">{{ edu.duration }}</span>
+  </div>
+  <div class="sub">
+    <span>{{ edu.degree }}{% if edu.gpa %} | CGPA: {{ edu.gpa }}{% endif %}</span>
+  </div>
+  {% endfor %}
+
+  <!-- ===================== COURSEWORK ===================== -->
+  <h2>Relevant Coursework</h2>
+  <ul class="tight">
+    {% for cw in coursework %}
+    <li><b>{{ cw.category }}:</b> {{ cw.entries }}</li>
+    {% endfor %}
+  </ul>
+
+  <!-- ===================== SKILLS ===================== -->
+  <h2>Skills</h2>
+  <ul class="tight">
+    {% for sk in skills %}
+    <li><b>{{ sk.category }}:</b> {{ sk.entries }}</li>
+    {% endfor %}
+  </ul>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <h2>Experience</h2>
+  {% for exp in experiences %}
+  <div class="keep">
+    <div class="row">
+      <span class="l">{{ exp.role }}</span>
+      <span class="r">{{ exp.duration }}</span>
+    </div>
+    <div class="sub"><span>{{ exp.company }}</span><span>{{ exp.location }}</span></div>
+    <ul>
+      {% for bullet in exp.bullets %}
+      <li>{{ bullet | safe }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+
+  <!-- ===================== PROJECTS ===================== -->
+  <h2>Projects</h2>
+  {% for proj in projects %}
+  <div class="keep">
+    <div class="line"><b>{{ proj.title }}</b>{% if proj.context %} &mdash; {{ proj.context }}{% endif %}</div>
+    <ul>
+      {% for bullet in proj.bullets %}
+      <li>{{ bullet | safe }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+
+  <!-- ===================== PATENT & CERTIFICATIONS ===================== -->
+  {% if patents_certifications %}
+  <h2>Patent &amp; Certifications</h2>
+  <ul class="tight">
+    {% for pc in patents_certifications %}
+    <li><b>{{ pc.type }}:</b> {{ pc.title }} &mdash; {{ pc.details }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <!-- ===================== POR & ACHIEVEMENTS ===================== -->
+  {% if pors_achievements %}
+  <h2>Position of Responsibility &amp; Achievements</h2>
+  <ul class="tight">
+    {% for item in pors_achievements %}
+    <li><b>{{ item.title }}:</b> {{ item.details }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+</body>
+</html>

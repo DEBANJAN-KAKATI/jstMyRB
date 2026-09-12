@@ -1,0 +1,55 @@
+# ==============================================================================
+# PRIVATE RESUMES & CONFIDENTIAL DOCUMENTS (DO NOT PUBLISH)
+# ==============================================================================
+Resumes/
+output/
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+ils_slides_text.txt
+scratch_extracted_pages.json
+scratch_extract.py
+github_repos.json
+
+# Personal Candidate Data & Private Databases
+data/profile_store.json
+data/resume_agent.db
+data/settings.json
+
+# API Keys, Secrets & Environment Variables
+.env
+.env.*
+*.key
+*.token
+
+# ==============================================================================
+# Python & Virtual Environments
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# ==============================================================================
+# Executables & PyInstaller Artifacts (Large Binaries)
+# ==============================================================================
+ResumeAgentPro.exe
+*.exe
+build/
+dist/
+*.spec
+
+# ==============================================================================
+# OS & IDE Temp Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

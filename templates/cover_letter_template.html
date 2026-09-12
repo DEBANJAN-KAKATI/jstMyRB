@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ candidate_name }} — Cover Letter ({{ company }} — {{ role }})</title>
+<style>
+  :root { color-scheme: light; }
+
+  @page {
+    size: A4;
+    margin: 0.6in 0.7in;
+  }
+
+  html { background: #f0f0f0; }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10.5pt;
+    line-height: 1.35;
+    color: #111;
+    background: #fff;
+    margin: 0 auto;
+    padding: 0.6in 0.7in;
+    max-width: 8.27in;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  .header {
+    text-align: center;
+    border-bottom: 1.2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+  }
+  .name {
+    font-size: 20pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
+  }
+  .contact {
+    font-size: 9.5pt;
+    color: #333;
+  }
+  .contact a {
+    color: #0645ad;
+    text-decoration: underline;
+  }
+
+  .meta-block {
+    margin-bottom: 16px;
+    font-size: 10.5pt;
+  }
+  .date {
+    margin-bottom: 12px;
+    font-style: italic;
+    color: #444;
+  }
+  .recipient {
+    line-height: 1.25;
+  }
+  .recipient-title {
+    font-weight: bold;
+  }
+
+  .salutation {
+    margin-bottom: 14px;
+    font-weight: bold;
+  }
+
+  .body-paragraph {
+    margin-bottom: 14px;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
+  .highlight-bullets {
+    margin: 10px 0 14px 20px;
+    padding: 0;
+  }
+  .highlight-bullets li {
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .sign-off {
+    margin-top: 24px;
+  }
+  .signature-name {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  @media print {
+    html, body {
+      background: #fff !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="name">{{ candidate_name }}</div>
+  <div class="contact">
+    {{ candidate_email }} | {{ candidate_phone }} |
+    <a href="{{ candidate_linkedin }}">LinkedIn</a> |
+    <a href="{{ candidate_github }}">GitHub</a>
+  </div>
+</div>
+
+<div class="meta-block">
+  <div class="date">{{ current_date }}</div>
+  <div class="recipient">
+    <div class="recipient-title">Hiring Team / Campus Recruiting</div>
+    <div>{{ company }}</div>
+    <div>Re: Application for {{ role }}</div>
+  </div>
+</div>
+
+<div class="salutation">Dear Hiring Team at {{ company }},</div>
+
+{% for para in paragraphs %}
+<div class="body-paragraph">
+  {{ para | safe }}
+</div>
+{% endfor %}
+
+{% if key_highlights %}
+<ul class="highlight-bullets">
+  {% for h in key_highlights %}
+  <li>{{ h | safe }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<div class="body-paragraph">
+  {{ closing_paragraph | safe }}
+</div>
+
+<div class="sign-off">
+  <div>Sincerely,</div>
+  <div class="signature-name">{{ candidate_name }}</div>
+  <div style="font-size: 9.5pt; color: #444; font-style: italic;">
+    B.E. Chemical Engineering (Hons.) | Minor in Finance<br>
+    Birla Institute of Technology and Science (BITS), Pilani — K.K. Birla Goa Campus
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+{
+  "personal_info": {
+    "name": "YOUR NAME",
+    "email": "your.email@example.com",
+    "phone": "+1 (555) 019-2834",
+    "linkedin": "https://linkedin.com/in/yourprofile",
+    "github": "https://github.com/yourusername",
+    "location": "City, State / Country"
+  },
+  "education": [
+    {
+      "institution": "University / Institute Name",
+      "degree": "B.S. / B.E. in Computer Science / Engineering | Minor: Mathematics",
+      "duration": "2023 – 2027",
+      "gpa": "3.9 / 4.0",
+      "location": "City, Country"
+    }
+  ],
+  "coursework": {
+    "quantitative": [
+      "Probability & Stochastic Processes",
+      "Statistical Methods",
+      "Machine Learning",
+      "Data Analytics"
+    ],
+    "finance": [
+      "Financial Modeling",
+      "Derivatives & Risk Management",
+      "Portfolio Management"
+    ],
+    "computing_ai": [
+      "Data Structures & Algorithms",
+      "Distributed Systems",
+      "Deep Learning",
+      "RAG & LLM Architectures"
+    ]
+  },
+  "skills": {
+    "programming": [
+      "Python", "C++", "C", "SQL", "JavaScript", "TypeScript"
+    ],
+    "frameworks_web": [
+      "FastAPI", "React", "Docker", "Node.js", "Git", "Linux"
+    ],
+    "data_systems": [
+      "PostgreSQL", "Redis", "Pandas", "NumPy", "PyTorch"
+    ]
+  },
+  "experiences": [
+    {
+      "id": "exp_sample_1",
+      "role": "Software / Quantitative Engineering Intern",
+      "company": "Tech / Finance Corporation",
+      "duration": "May 2024 – Jul 2024",
+      "location": "New York, NY",
+      "selected_tier": "2",
+      "tags": ["full_stack", "sde", "quant"],
+      "bullets": [
+        "Engineered high-throughput automated pipeline in <b>Python</b>, reducing processing latency by <b>65%</b>.",
+        "Architected scalable microservices using <b>FastAPI</b> and <b>Docker</b> handling <b>10k+</b> daily requests.",
+        "Formulated statistical backtesting models achieving <b>99.4% precision</b> across production data."
+      ],
+      "points_tier": {
+        "1": [
+          "Engineered high-throughput automated pipeline in <b>Python</b>, reducing processing latency by <b>65%</b>."
+        ],
+        "2": [
+          "Engineered high-throughput automated pipeline in <b>Python</b>, reducing processing latency by <b>65%</b>.",
+          "Architected scalable microservices using <b>FastAPI</b> and <b>Docker</b> handling <b>10k+</b> daily requests."
+        ],
+        "3": [
+          "Engineered high-throughput automated pipeline in <b>Python</b>, reducing processing latency by <b>65%</b>.",
+          "Architected scalable microservices using <b>FastAPI</b> and <b>Docker</b> handling <b>10k+</b> daily requests.",
+          "Formulated statistical backtesting models achieving <b>99.4% precision</b> across production data."
+        ]
+      }
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj_sample_1",
+      "title": "Distributed Low-Latency Trading & Risk Engine",
+      "context": "High-Frequency System",
+      "selected_tier": "2",
+      "tags": ["quant", "finance", "sde"],
+      "bullets": [
+        "Engineered concurrent order routing engine in <b>C++20</b> achieving <b>sub-50μs</b> execution latency.",
+        "Implemented real-time <b>CVaR</b> and portfolio risk calculations processing <b>1M+</b> tick updates per second.",
+        "Benchmarked memory footprint and optimized cache locality, decreasing allocations by <b>42%</b>."
+      ],
+      "points_tier": {
+        "1": [
+          "Engineered concurrent order routing engine in <b>C++20</b> achieving <b>sub-50μs</b> execution latency."
+        ],
+        "2": [
+          "Engineered concurrent order routing engine in <b>C++20</b> achieving <b>sub-50μs</b> execution latency.",
+          "Implemented real-time <b>CVaR</b> and portfolio risk calculations processing <b>1M+</b> tick updates per second."
+        ],
+        "3": [
+          "Engineered concurrent order routing engine in <b>C++20</b> achieving <b>sub-50μs</b> execution latency.",
+          "Implemented real-time <b>CVaR</b> and portfolio risk calculations processing <b>1M+</b> tick updates per second.",
+          "Benchmarked memory footprint and optimized cache locality, decreasing allocations by <b>42%</b>."
+        ]
+      }
+    }
+  ],
+  "patents_certifications": [],
+  "pors_achievements": [],
+  "awards_medals": []
+}
