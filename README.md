@@ -1,6 +1,6 @@
-# 📄 JstMyRB — Jane Street Spec 1-Page Resume Builder & Career OS
+# 📄 JstMyRB — Elite 1-Page Resume Builder & Career OS
 
-An end-to-end, high-performance **Career Operating System & 1-Page Resume Engine** engineered to **Jane Street typographic specifications**. Built with **FastAPI**, **Vanilla CSS**, and a **Multi-LLM Router**, JstMyRB delivers mathematically guaranteed 1-page document fit, subword BM25 vector retrieval, Google XYZ bullet point polishing, an ATS compliance engine, an application recruitment Kanban CRM, and executive cover letter synthesis—fully responsive on mobile phones and ready for zero-config serverless deployment on **Vercel**.
+An end-to-end, high-performance **Career Operating System & 1-Page Resume Engine** engineered with **High-Density Quantitative & Technical Specifications**. Built with **FastAPI**, **Vanilla CSS**, and a **Multi-LLM Router**, JstMyRB delivers mathematically guaranteed 1-page document fit, subword BM25 vector retrieval, Google XYZ bullet point polishing, an ATS compliance engine, an application recruitment Kanban CRM, and executive cover letter synthesis—fully responsive on mobile phones and ready for zero-config serverless deployment on **Vercel**.
 
 ---
 
@@ -55,8 +55,8 @@ Traditional resume builders suffer from severe architectural limitations:
 
 ## ✨ Core Features & Technical Innovations
 
-### 1. 📏 Jane Street Spec Typography & 1-Page Crease Guarantee
-* **A4 Mathematical Density**: Engineered to exact Jane Street specifications with customizable 9.0pt–10.2pt font scale and 1.10–1.24 line spacing.
+### 1. 📏 High-Density Typography & 1-Page Crease Guarantee
+* **A4 Mathematical Density**: Engineered to high-density quantitative specifications with customizable 9.0pt–10.2pt font scale and 1.10–1.24 line spacing.
 * **Real-Time Visual Crease Line**: An active boundary detector highlights the exact 11.69in A4 cutoff line, instantly signaling whether content fits within one page or risks spilling over.
 * **Dual Output Engines**: Simultaneously generates pixel-perfect web HTML for live browser printing and clean, modular LaTeX source code (`.tex`) compatible with TeXLive and Overleaf.
 
@@ -84,7 +84,7 @@ Traditional resume builders suffer from severe architectural limitations:
 * **Conversion Analytics**: Computes real-time funnel velocity, Interview Rate (%), and Offer Conversion Rate (%).
 
 ### 7. ✉️ Executive Cover Letter Studio
-* **Jane Street Style Typography**: Renders matching serif executive letters tailored to the target company's mission and engineering culture.
+* **Executive Serif Typography**: Renders matching serif executive letters tailored to the target company's mission and engineering culture.
 * **Metric-Driven Highlights**: Synthesizes 3 cohesive narrative paragraphs and 3 high-impact bullet points drawn directly from verified vault accomplishments.
 
 ### 8. 📱 Mobile Phone First Architecture
@@ -126,8 +126,8 @@ JstResumeBuilder/
 │   │   └── app.js             # Client state manager, canvas zoom & mobile switchers
 │   └── index.html             # Single-page interface (Hub, Builder, Vault, CRM, Letters)
 ├── templates/
-│   ├── cover_letter_template.html # Jane Street serif cover letter layout
-│   └── resume_template.html       # Jane Street 1-page A4 resume layout
+│   ├── cover_letter_template.html # Executive serif cover letter layout
+│   └── resume_template.html       # High-density 1-page A4 resume layout
 ├── path_utils.py              # Serverless /tmp dynamic path resolution & data seeding
 ├── server.py                  # FastAPI REST application & endpoint definitions
 ├── requirements.txt           # Production dependencies for local & Vercel runtime
@@ -214,7 +214,7 @@ npx vercel --prod
 
 | Metric / Dimension | Target / Benchmark | JstMyRB Measurement | Technical Implementation |
 | :--- | :--- | :--- | :--- |
-| **Page Fit Determinism** | 100% 1-Page Guarantee | **1.000 A4 Pages** | Jane Street vertical density calculations + active crease line detector |
+| **Page Fit Determinism** | 100% 1-Page Guarantee | **1.000 A4 Pages** | High-density vertical typography calculations + active crease line detector |
 | **BM25 Vault Ranking Latency** | < 20 ms | **3.8 ms** | Subword character n-gram Robertson-Spärck Jones TF-IDF engine |
 | **ATS Compliance Score** | ≥ 85 / 100 | **92 – 98 / 100** | 4-pillar scoring: Formatting, Metrics (75%+), Verbs (60%+), Keywords |
 | **Mobile Canvas Auto-Scale** | Zero clipping on 360px+ | **100% Viewport Fit** | Dynamic CSS transform matrix calculation: `(viewport - 28) / 794` |
