@@ -169,6 +169,9 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           LinkedIn Profile Sync
         </button>
+        <button id="btn-hub-sync-vault" class="btn btn-secondary btn-sm" style="color:var(--accent-cyan); border-color:rgba(6,182,212,0.4);">
+          📥 Sync / Backup Vault
+        </button>
       </div>
 
       <div style="display:flex; align-items:center; gap:8px;">
@@ -372,6 +375,7 @@
 
       <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <button class="back-to-hub-btn btn-back-hub">← Back to Hub</button>
+        <button id="btn-page-sync-vault" class="btn btn-secondary btn-sm" style="color:var(--accent-cyan); border-color:rgba(6,182,212,0.4);">📥 Sync / Backup Vault</button>
         <button id="btn-page-add-proj" class="btn btn-primary btn-sm">+ Add Project (1/2/3 Pts)</button>
         <button id="btn-page-add-exp" class="btn btn-secondary btn-sm">+ Add Experience</button>
         <button id="btn-page-add-skill-cat" class="btn btn-secondary btn-sm">+ Add Skill Category</button>
@@ -505,6 +509,53 @@
   </main>
 
 
+
+  <!-- Modal: Sync / Backup Career Vault -->
+  <div id="modal-vault-sync" class="modal-backdrop">
+    <div class="modal-card" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 style="font-size:15px;">📥 Backup & Sync Career Vault</h3>
+        <button class="modal-close-btn btn btn-secondary btn-sm">&times;</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Export Box -->
+        <div style="background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.3); border-radius:8px; padding:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h4 style="font-size:13px; font-weight:700; color:#818cf8; margin:0;">📥 Export Career Vault</h4>
+            <span class="pill-badge badge-indigo">From PC / Current Session</span>
+          </div>
+          <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">
+            Download your full career profile (14+ projects, experiences, skills, education, coursework, and awards) as a single JSON file to backup or transfer to your phone.
+          </p>
+          <a href="/api/profile/export" download="jstmyrb_career_vault.json" id="btn-export-vault-download" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+            📥 Download Vault JSON
+          </a>
+        </div>
+
+        <!-- Import Box -->
+        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:8px; padding:14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <h4 style="font-size:13px; font-weight:700; color:#34d399; margin:0;">📤 Import Vault to This Device</h4>
+            <span class="pill-badge badge-green">Permanent Phone Cache</span>
+          </div>
+          <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.4;">
+            Upload your <code style="color:#34d399;">jstmyrb_career_vault.json</code> file or paste its JSON text below. Your phone will remember all your records.
+          </p>
+          <div style="display:flex; gap:8px; margin-bottom:10px; align-items:center;">
+            <input type="file" id="input-vault-file" accept=".json,application/json" style="display:none;">
+            <button type="button" id="btn-pick-vault-file" class="btn btn-primary btn-sm">📁 Choose JSON File</button>
+            <span id="label-vault-file" style="font-size:11px; color:var(--text-muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240px;">No file chosen</span>
+          </div>
+          <div style="font-size:11px; font-weight:700; color:var(--text-muted); margin-bottom:4px;">Or paste JSON data directly:</div>
+          <textarea id="input-vault-json-raw" class="input-box" rows="4" placeholder='{"personal_info": {...}, "projects": [...]}' style="font-family:monospace; font-size:11px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-close-btn btn btn-secondary">Close</button>
+        <button type="button" id="btn-exec-vault-import" class="btn btn-primary">🚀 Load into Vault</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal: Gemini API Key -->
   <div id="modal-api-key" class="modal-backdrop">

@@ -23,9 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
 async function initApp() {
   setupEventListeners();
   setupV2EventListeners();
+  setupVaultSyncEventListeners();
   checkStatus();
   loadLLMSettingsStatus();
   switchAppView("hub");
+  await restoreVaultFromClientStorage();
   await loadResume(currentCategory);
 }
 
@@ -2961,4 +2963,131 @@ async function applyCriticRewrite() {
     console.error("Render after critic error:", e);
   }
 }
+
+/* ==================== VAULT SYNC & BACKUP LOGIC ==================== */
+
+function setupVaultSyncEventListeners() {
+  const modal = document.getElementById("modal-vault-sync");
+  const btnHubSync = document.getElementById("btn-hub-sync-vault");
+  const btnPageSync = document.getElementById("btn-page-sync-vault");
+  const fileInput = document.getElementById("input-vault-file");
+  const btnPick = document.getElementById("btn-pick-vault-file");
+  const labelFile = document.getElementById("label-vault-file");
+  const textRaw = document.getElementById("input-vault-json-raw");
+  const btnExec = document.getElementById("btn-exec-vault-import");
+
+  const openModal = () => {
+    if (modal) modal.classList.add("open");
+  };
+
+  if (btnHubSync) btnHubSync.addEventListener("click", openModal);
+  if (btnPageSync) btnPageSync.addEventListener("click", openModal);
+
+  if (btnPick && fileInput) {
+    btnPick.addEventListener("click", () => fileInput.click());
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (labelFile) labelFile.textContent = file.name;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        if (textRaw) textRaw.value = evt.target.result;
+      };
+      reader.readAsText(file, "UTF-8");
+    });
+  }
+
+  if (btnExec) {
+    btnExec.addEventListener("click", async () => {
+      const raw = textRaw ? textRaw.value.trim() : "";
+      if (!raw) {
+        alert("Please select a JSON file or paste JSON data into the text box.");
+        return;
+      }
+
+      let parsed = null;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (err) {
+        alert("Invalid JSON format. Please check the file contents.");
+        return;
+      }
+
+      btnExec.disabled = true;
+      btnExec.textContent = "Importing...";
+
+      try {
+        const res = await fetch("/api/profile/import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(parsed)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || "Server error importing profile");
+        }
+
+        // Cache permanently in phone browser localStorage
+        try {
+          localStorage.setItem("jstmyrb_cached_vault", JSON.stringify(parsed));
+        } catch (e) {
+          console.warn("Could not save to localStorage:", e);
+        }
+
+        const countProjects = (parsed.projects || []).length;
+        const countExps = (parsed.experiences || []).length;
+
+        // Refresh vault workspace and resume canvas
+        if (typeof loadDedicatedVaultWorkspace === "function") {
+          await loadDedicatedVaultWorkspace();
+        }
+        await loadResume(currentCategory);
+
+        if (modal) modal.classList.remove("open");
+        alert(`✅ Success! Imported ${countProjects} projects and ${countExps} experiences into your Vault.`);
+      } catch (err) {
+        alert("Failed to import vault: " + err.message);
+      } finally {
+        btnExec.disabled = false;
+        btnExec.textContent = "🚀 Load into Vault";
+      }
+    });
+  }
+}
+
+async function restoreVaultFromClientStorage() {
+  try {
+    const cached = localStorage.getItem("jstmyrb_cached_vault");
+    if (!cached) return;
+
+    const parsed = JSON.parse(cached);
+    if (!parsed || typeof parsed !== "object") return;
+
+    // Check server profile
+    const res = await fetch("/api/profile");
+    if (!res.ok) return;
+    const srv = await res.json();
+
+    const serverProjCount = (srv.projects || []).length;
+    const cachedProjCount = (parsed.projects || []).length;
+
+    // If server has fewer projects than what's cached in client's phone, restore it
+    if (cachedProjCount > serverProjCount) {
+      console.log(`Restoring ${cachedProjCount} projects from device local cache to server session...`);
+      await fetch("/api/profile/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed)
+      });
+    }
+  } catch (e) {
+    console.error("Auto-restore from local cache failed:", e);
+  }
+}
+
 

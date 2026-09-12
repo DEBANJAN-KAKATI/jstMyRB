@@ -229,6 +229,20 @@ def get_status():
 def get_profile():
     return pm.get_all()
 
+@app.get("/api/profile/export")
+def export_profile():
+    return JSONResponse(
+        content=pm.get_all(),
+        headers={"Content-Disposition": "attachment; filename=jstmyrb_career_vault.json"}
+    )
+
+@app.post("/api/profile/import")
+def import_profile(data: Dict[str, Any]):
+    ok = pm.import_profile(data)
+    if not ok:
+        raise HTTPException(status_code=400, detail="Invalid profile format")
+    return {"status": "success", "profile": pm.get_all()}
+
 @app.get("/api/categories")
 def get_categories():
     return [

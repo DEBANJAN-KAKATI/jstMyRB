@@ -182,3 +182,15 @@ class ProfileManager:
             self.data["patents_certifications"] = []
         self.data["patents_certifications"].insert(0, item)
         self.save()
+
+    def import_profile(self, new_data: Dict[str, Any]) -> bool:
+        if isinstance(new_data, dict) and new_data:
+            self.data = new_data
+            self.save(entity_type="import", entity_id="vault_import")
+            try:
+                with open(self.path, "w", encoding="utf-8") as f:
+                    json.dump(self.data, f, indent=2)
+            except Exception as e:
+                print(f"Error saving imported profile to file: {e}")
+            return True
+        return False
