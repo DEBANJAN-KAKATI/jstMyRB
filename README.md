@@ -62,7 +62,7 @@ Traditional resume builders suffer from severe architectural limitations:
 
 ### 2. 🗄️ Centralized Career Storage Vault with 1/2/3 Point Tiers
 * **Multi-Tier Bullet Compression**: Every technical project and internship experience stores discrete 1-point, 2-point, and 3-point bullet variations. Candidates dynamically adjust density to fit available space without manual rewriting.
-* **ACID SQLite Database**: Backed by SQLite with structured JSON migrations, storing 14+ technical projects (Distributed Systems, Shell HTE Automation, Deep Learning, Quantitative Risk), internships, patents, coursework, and national awards.
+* **ACID SQLite Database**: Backed by SQLite with structured JSON migrations, storing technical projects (Distributed Systems, Cloud Architecture, Deep Learning, Quantitative Analytics), internships, certifications, coursework, and honors.
 * **Audit Diff History**: Every update logs an immutable diff entry in `vault_versions` for change auditing and rollback.
 
 ### 3. ⚡ Local Semantic Retrieval Engine (Zero-Dependency BM25)
@@ -220,21 +220,6 @@ npx vercel --prod
 | **Mobile Canvas Auto-Scale** | Zero clipping on 360px+ | **100% Viewport Fit** | Dynamic CSS transform matrix calculation: `(viewport - 28) / 794` |
 | **Cold-Start Serverless Boot** | < 1.5 seconds | **~420 ms** | Lazy LLM imports + pre-seeded SQLite memory-mapped caching |
 | **API Fallback Reliability** | 100% Uptime | **100% Execution** | Deterministic ranking fallback when offline or missing LLM keys |
-
----
-
-## 🎨 Role Categories & Target Alignment
-
-| Role Category | Primary Focus Tags | Featured Vault Projects | Key Industry Keywords |
-| :--- | :--- | :--- | :--- |
-| **Quantitative Researcher** | `quant`, `finance` | Systemic Risk Modeling, Paints Valuation, Ice Melting Prediction | Econometrics, GARCH, CVaR, Stochastic Calculus, Monte Carlo |
-| **AI / Machine Learning** | `ai_ml` | Multi-Agent RAG Pipeline, XAI Retinopathy, FreeWind AQI | PyTorch, Transformers, LangGraph, Grad-CAM, Vector Embeddings |
-| **Software Engineer (SDE)** | `sde`, `full_stack` | Shell HTE Automation Suite, JstPDF Canvas, BitsLens | FastAPI, React, Docker, Microservices, Distributed Systems |
-| **Data Scientist** | `ai_ml`, `quant` | Kalpana Mission Dashboard, FreeWind AQI, BitsLens | Statistical Hypothesis Testing, SQL, Feature Engineering |
-| **Chemical Engineering** | `chemical`, `systems` | Shell HTE Automation, Ice Melting Prediction Model | Process Engineering, Mass Balance, Catalysis, Reactor Kinetics |
-| **Product Management** | `product` | Kalpana Dashboard, Shell HTE Platform | Product Roadmap, KPI Tracking, Agile/Scrum, Stakeholder Management |
-
----
 
 ## 📜 License
 
