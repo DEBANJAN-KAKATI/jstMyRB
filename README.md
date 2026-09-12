@@ -225,11 +225,3 @@ npx vercel --prod
 
 This project is licensed under the **MIT License**. See the [LICENSE](file:///d:/New%20folder/PYTHON/JstResumeBuilder/LICENSE) file for complete details.
 
----
-
-## 👨‍💻 Author
-
-**Debanjan Kakati**
-* B.E. Chemical Engineering (Hons.) + Minor in Finance — **BITS Pilani (Goa Campus)**
-* GitHub: [@DEBANJAN-KAKATI](https://github.com/DEBANJAN-KAKATI)
-* LinkedIn: [Debanjan Kakati](https://linkedin.com/in/debanjan-kakati-5517891b7/)
