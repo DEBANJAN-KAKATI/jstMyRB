@@ -63,6 +63,9 @@ renderer = ResumeRenderer()
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+from portfolio_routes import create_portfolio_router
+app.include_router(create_portfolio_router(pm, load_settings, save_settings))
+
 # Models
 class ApiKeyRequest(BaseModel):
     api_key: str

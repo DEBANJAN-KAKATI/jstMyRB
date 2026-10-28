@@ -60,6 +60,7 @@ class GitHubTracker:
 
         # Try Gemini first for intelligent 1/2/3 point tiers
         gemini_tiers = self.thinker.generate_github_repo_bullets(name, desc, lang, topics)
+        bullets_source = "ai"
         if gemini_tiers and "point_1" in gemini_tiers:
             points_tier = {
                 "1": gemini_tiers.get("point_1", []),
@@ -67,6 +68,9 @@ class GitHubTracker:
                 "3": gemini_tiers.get("point_3", [])
             }
         else:
+            # These templated bullets contain made-up metrics, so the project is flagged and
+            # kept out of the public portfolio export until its bullets are edited.
+            bullets_source = "template"
             # High-impact algorithmic fallback
             topic_str = f" utilizing {', '.join(topics[:3])}" if topics else ""
             clean_desc = desc if desc != "No description provided" else f"high-performance {lang} application"
@@ -91,5 +95,6 @@ class GitHubTracker:
             "points_tier": points_tier,
             "selected_tier": "2",
             "tags": tags,
-            "github_url": repo.get("url")
+            "github_url": repo.get("url"),
+            "bullets_source": bullets_source
         }

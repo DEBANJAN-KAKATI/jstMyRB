@@ -122,6 +122,9 @@ class ProfileManager:
         for idx, p in enumerate(self.data.get("projects", [])):
             if p.get("id") == proj_id:
                 p.update(updated_data)
+                # Edited by hand: templated bullets no longer block the portfolio export.
+                if ("bullets" in updated_data or "points_tier" in updated_data) and p.get("bullets_source") == "template":
+                    p["bullets_source"] = "manual"
                 # re-sync bullets from selected tier
                 tier = p.get("selected_tier", "2")
                 if "points_tier" in p and tier in p["points_tier"]:
@@ -134,6 +137,8 @@ class ProfileManager:
         for idx, e in enumerate(self.data.get("experiences", [])):
             if e.get("id") == exp_id:
                 e.update(updated_data)
+                if ("bullets" in updated_data or "points_tier" in updated_data) and e.get("bullets_source") == "template":
+                    e["bullets_source"] = "manual"
                 tier = e.get("selected_tier", "2")
                 if "points_tier" in e and tier in e["points_tier"]:
                     e["bullets"] = e["points_tier"][tier]
