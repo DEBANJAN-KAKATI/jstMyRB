@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import shutil
+from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from path_utils import get_base_dir, get_bundle_dir, get_writable_dir
 
@@ -10,6 +11,13 @@ PERSISTENT_STORE_PATH = os.path.join(PERSISTENT_STORE_DIR, "profile_store.json")
 BUNDLED_STORE_PATH = os.path.join(get_bundle_dir(), "data", "profile_store.json")
 
 from agent.db import db
+
+
+def _touch(item: Dict[str, Any]) -> Dict[str, Any]:
+    """Stamp a vault item as edited now (the portfolio's Pull uses it to detect conflicts)."""
+    if isinstance(item, dict):
+        item["updated_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+    return item
 
 class ProfileManager:
     def __init__(self, path: Optional[str] = None):
@@ -95,6 +103,7 @@ class ProfileManager:
                 "3": bullets[:3] if len(bullets) >= 3 else bullets
             }
         exp["selected_tier"] = exp.get("selected_tier", "2")
+        _touch(exp)
         self.data["experiences"].insert(0, exp)
         self.save()
 
@@ -110,6 +119,7 @@ class ProfileManager:
                 "3": exp_b[:3] if len(exp_b) >= 3 else exp_b
             }
         proj["selected_tier"] = proj.get("selected_tier", "2")
+        _touch(proj)
 
         existing_idx = next((i for i, p in enumerate(self.data["projects"]) if p["title"].lower() == proj["title"].lower()), None)
         if existing_idx is not None:
@@ -122,6 +132,7 @@ class ProfileManager:
         for idx, p in enumerate(self.data.get("projects", [])):
             if p.get("id") == proj_id:
                 p.update(updated_data)
+                _touch(p)
                 # Edited by hand: templated bullets no longer block the portfolio export.
                 if ("bullets" in updated_data or "points_tier" in updated_data) and p.get("bullets_source") == "template":
                     p["bullets_source"] = "manual"
@@ -137,6 +148,7 @@ class ProfileManager:
         for idx, e in enumerate(self.data.get("experiences", [])):
             if e.get("id") == exp_id:
                 e.update(updated_data)
+                _touch(e)
                 if ("bullets" in updated_data or "points_tier" in updated_data) and e.get("bullets_source") == "template":
                     e["bullets_source"] = "manual"
                 tier = e.get("selected_tier", "2")
@@ -154,6 +166,7 @@ class ProfileManager:
             for idx, item in enumerate(sec):
                 if isinstance(item, dict) and (item.get("id") == item_id_or_idx or item.get("title") == item_id_or_idx or str(idx) == str(item_id_or_idx)):
                     item.update(updated_data)
+                    _touch(item)
                     self.save()
                     return True
         elif isinstance(sec, dict):
@@ -173,19 +186,19 @@ class ProfileManager:
     def add_por(self, item: Dict[str, Any]):
         if "pors_achievements" not in self.data:
             self.data["pors_achievements"] = []
-        self.data["pors_achievements"].insert(0, item)
+        self.data["pors_achievements"].insert(0, _touch(item))
         self.save()
 
     def add_award_medal(self, item: Dict[str, Any]):
         if "awards_medals" not in self.data:
             self.data["awards_medals"] = []
-        self.data["awards_medals"].insert(0, item)
+        self.data["awards_medals"].insert(0, _touch(item))
         self.save()
 
     def add_patent_certification(self, item: Dict[str, Any]):
         if "patents_certifications" not in self.data:
             self.data["patents_certifications"] = []
-        self.data["patents_certifications"].insert(0, item)
+        self.data["patents_certifications"].insert(0, _touch(item))
         self.save()
 
     def import_profile(self, new_data: Dict[str, Any]) -> bool:

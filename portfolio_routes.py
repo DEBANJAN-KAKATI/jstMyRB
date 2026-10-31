@@ -6,6 +6,9 @@ Portfolio sync endpoints (kept out of server.py so it only needs two lines):
   POST /api/portfolio/settings
   GET  /api/portfolio/preview     export + diff since the last publish
   POST /api/portfolio/publish     commit data/vault.public.json to the portfolio repo
+                                  (and clear inbox entries already pulled)
+  GET  /api/portfolio/pull/preview   Dev Mode edits waiting in the portfolio's vault inbox
+  POST /api/portfolio/pull/apply     merge the chosen ones into the vault
   POST /api/linkedin/import_export   LinkedIn data-export zip (base64) -> merge preview
   POST /api/linkedin/apply           accept previewed items into the vault
 """
@@ -27,6 +30,7 @@ from agent.portfolio_export import (
     load_last_publish,
     publish_to_github,
 )
+from agent.portfolio_pull import apply_pull, build_pull_preview, clear_pulled_from_inbox, fetch_inbox, remember_pulled
 from agent.linkedin_export import LinkedInImportError, apply_items, build_preview, parse_linkedin_zip
 
 PREVIEW_TTL_SECONDS = 30 * 60
@@ -51,9 +55,22 @@ class LinkedInApplyRequest(BaseModel):
     keys: List[str]
 
 
+class PullApplyRequest(BaseModel):
+    pull_id: str
+    choices: Dict[str, str] = {}  # key -> portfolio | vault | skip
+
+
 def create_portfolio_router(pm, load_settings: Callable[[], Dict[str, Any]], save_settings: Callable[[Dict[str, Any]], None]) -> APIRouter:
     router = APIRouter()
-    previews: Dict[str, Dict[str, Any]] = {}  # import_id -> {items, created}
+    previews: Dict[str, Dict[str, Any]] = {}  # import_id / pull_id -> {items, created}
+
+    def remember_preview(items: List[Dict[str, Any]]) -> str:
+        now = time.time()
+        for k in [k for k, v in previews.items() if now - v["created"] > PREVIEW_TTL_SECONDS]:
+            previews.pop(k, None)
+        key = uuid.uuid4().hex
+        previews[key] = {"items": items, "created": now}
+        return key
 
     def public_settings(st: Dict[str, Any]) -> Dict[str, Any]:
         last = load_last_publish()
@@ -115,7 +132,35 @@ def create_portfolio_router(pm, load_settings: Callable[[], Dict[str, Any]], sav
             result = publish_to_github(export, st)
         except PublishError as e:
             raise HTTPException(status_code=400, detail=str(e))
-        return {"status": "success", **result, "settings": public_settings(load_settings())}
+        # The vault now holds what was pulled, so those inbox entries can go.
+        try:
+            inbox = clear_pulled_from_inbox(st)
+        except PublishError as e:
+            inbox = {"cleared": 0, "error": f"Published, but the pulled inbox entries weren't cleared: {e}"}
+        return {"status": "success", **result, "inbox": inbox, "settings": public_settings(load_settings())}
+
+    @router.get("/api/portfolio/pull/preview")
+    def pull_preview():
+        try:
+            inbox, _ = fetch_inbox(load_settings())
+        except PublishError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        rows = build_pull_preview(inbox, pm.get_all())
+        summary = {s: sum(1 for r in rows if r["status"] == s) for s in ("new", "update", "delete", "conflict", "unchanged")}
+        return {"pull_id": remember_preview(rows), "items": rows, "summary": summary}
+
+    @router.post("/api/portfolio/pull/apply")
+    def pull_apply(req: PullApplyRequest):
+        preview = previews.pop(req.pull_id, None)
+        if not preview:
+            raise HTTPException(status_code=410, detail="This preview expired. Open Pull from Portfolio again.")
+        if any(c not in ("portfolio", "vault", "skip") for c in req.choices.values()):
+            raise HTTPException(status_code=400, detail="Unknown choice.")
+        counts, resolved = apply_pull(pm.data, preview["items"], req.choices)
+        if counts["added"] or counts["updated"] or counts["deleted"]:
+            pm.save(entity_type="portfolio_pull", entity_id="vault_inbox")
+        remember_pulled(resolved)
+        return {"status": "success", **counts, "to_clear": len(resolved)}
 
     @router.post("/api/linkedin/import_export")
     def linkedin_import(req: LinkedInUploadRequest):
@@ -128,11 +173,7 @@ def create_portfolio_router(pm, load_settings: Callable[[], Dict[str, Any]], sav
         except LinkedInImportError as e:
             raise HTTPException(status_code=400, detail=str(e))
         items = build_preview(rows, pm.get_all())
-        now = time.time()
-        for k in [k for k, v in previews.items() if now - v["created"] > PREVIEW_TTL_SECONDS]:
-            previews.pop(k, None)
-        import_id = uuid.uuid4().hex
-        previews[import_id] = {"items": items, "created": now}
+        import_id = remember_preview(items)
         summary = {s: sum(1 for i in items if i["status"] == s) for s in ("new", "changed", "duplicate")}
         return {"import_id": import_id, "items": items, "summary": summary, "files": {k: len(v) for k, v in rows.items()}}
 

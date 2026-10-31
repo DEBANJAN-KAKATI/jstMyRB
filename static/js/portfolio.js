@@ -2,6 +2,7 @@
  * Portfolio sync UI for the Storage Vault:
  *   🌐 Publish to Portfolio — settings, diff preview since the last publish, commit via GitHub API
  *   in Import LinkedIn      — upload LinkedIn's data export zip, review, accept items one by one
+ *   ⬇ Pull from Portfolio   — bring edits made in the portfolio's Dev Mode back into the vault
  * Self-contained: adds its own buttons and modals using the app's existing styles.
  */
 (function () {
@@ -135,7 +136,8 @@
       try {
         await saveSettings();
         const r = await api("/api/portfolio/publish", { method: "POST" });
-        show(box("16,185,129", `<p style="font-size:13px; margin:0;">✅ Published. The portfolio's sync will open a pull request shortly.${r.commit_url ? ` <a href="${esc(r.commit_url)}" target="_blank" rel="noreferrer" style="color:#34d399;">View commit</a>` : ""}</p>`));
+        const inbox = r.inbox?.error ? `<br>⚠ ${esc(r.inbox.error)}` : r.inbox?.cleared ? `<br>Cleared ${r.inbox.cleared} pulled ${r.inbox.cleared === 1 ? "entry" : "entries"} from the portfolio's inbox.` : "";
+        show(box("16,185,129", `<p style="font-size:13px; margin:0;">✅ Published. The portfolio's sync will open a pull request shortly.${r.commit_url ? ` <a href="${esc(r.commit_url)}" target="_blank" rel="noreferrer" style="color:#34d399;">View commit</a>` : ""}${inbox}</p>`));
       } catch (e) {
         show(box("244,63,94", `<p style="font-size:12px; margin:0;">⚠ ${esc(e.message)}</p>`));
       } finally {
@@ -223,6 +225,84 @@
     });
   }
 
+  // ------------------------------------------------------------------ Pull from Portfolio
+  const pull = makeModal("modal-portfolio-pull", "⬇ Pull from Portfolio", 720);
+  const PULL_STATUS = {
+    new: ["badge-green", "New"],
+    update: ["badge-gold", "Changed"],
+    delete: ["badge-red", "Deleted on portfolio"],
+    conflict: ["badge-red", "Conflict"],
+    unchanged: ["badge-indigo", "Already in vault"],
+  };
+
+  async function renderPull() {
+    pull.body.innerHTML = note("Reading the portfolio's vault inbox…");
+    pull.footer.innerHTML = `<button class="pf-close btn btn-secondary">Close</button>`;
+    let preview;
+    try {
+      preview = await api("/api/portfolio/pull/preview");
+    } catch (e) {
+      pull.body.innerHTML = box("244,63,94", `<p style="font-size:12px; margin:0;">⚠ ${esc(e.message)}</p>`) + note("Pull uses the repository and token from 🌐 Publish to Portfolio.");
+      return;
+    }
+    if (!preview.items.length) {
+      pull.body.innerHTML = box("16,185,129", `<p style="font-size:13px; margin:0;">✅ Nothing waiting. Edits made in the portfolio's Dev Mode show up here.</p>`);
+      return;
+    }
+    const s = preview.summary;
+    const groups = {};
+    preview.items.forEach((it) => (groups[it.section] = groups[it.section] || []).push(it));
+    const choice = (it) => {
+      if (it.status === "conflict") {
+        return `<select class="input-box pull-choice" data-key="${esc(it.key)}" style="width:auto; font-size:11px; padding:2px 6px;">
+            <option value="skip">Decide later</option>
+            <option value="portfolio">Use portfolio version</option>
+            <option value="vault">Keep vault version</option>
+          </select>`;
+      }
+      return `<input type="checkbox" class="pull-item" data-key="${esc(it.key)}" ${it.status === "unchanged" ? "checked disabled" : "checked"} style="margin-top:3px;">`;
+    };
+    pull.body.innerHTML = `
+      <p style="font-size:12px; margin:0;"><b>${s.new}</b> new · <b>${s.update}</b> changed · <b>${s.delete}</b> deleted · <b>${s.conflict}</b> conflicts · <b>${s.unchanged}</b> already in vault.</p>
+      ${s.conflict ? note("A <b>conflict</b> means the item was also edited here after the portfolio edit was made. Pick which version wins, or decide later.") : ""}
+      ${Object.entries(groups).map(([section, items]) => `
+        <div>
+          <h4 style="font-size:12px; font-weight:700; margin:6px 0; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted);">${esc(SECTION_LABEL[section] || section)}</h4>
+          ${items.map((it) => {
+            const [badge, label] = PULL_STATUS[it.status];
+            const changes = Object.entries(it.changes || {}).map(([f, [a, b]]) => `<div style="font-size:11px; color:var(--text-muted);">${esc(f)}: <s>${esc(a || "—")}</s> → ${esc(b || "—")}</div>`).join("");
+            return `
+              <div style="display:flex; gap:10px; align-items:flex-start; padding:6px 8px; border-radius:6px; ${it.status === "unchanged" ? "opacity:.55;" : ""}">
+                ${choice(it)}
+                <span style="flex:1; min-width:0;">
+                  <span style="font-size:13px;">${esc(it.label)}</span>
+                  <span class="pill-badge ${badge}" style="margin-left:6px; font-size:10px;">${label}</span>
+                  ${it.edited_at ? `<span style="font-size:10px; color:var(--text-muted); margin-left:6px;">edited ${esc(new Date(it.edited_at).toLocaleString())}</span>` : ""}
+                  ${changes}
+                </span>
+              </div>`;
+          }).join("")}
+        </div>`).join("")}
+      ${note("Pulled items are removed from the portfolio's inbox the next time you 🌐 Publish to Portfolio.")}`;
+    pull.footer.innerHTML = `
+      <button class="pf-close btn btn-secondary">Cancel</button>
+      <button id="pull-apply" class="btn btn-primary">Pull selected</button>`;
+    pull.footer.querySelector("#pull-apply").addEventListener("click", async (ev) => {
+      const choices = {};
+      pull.body.querySelectorAll(".pull-item:not(:disabled)").forEach((c) => (choices[c.dataset.key] = c.checked ? "portfolio" : "skip"));
+      pull.body.querySelectorAll(".pull-choice").forEach((c) => (choices[c.dataset.key] = c.value));
+      ev.currentTarget.disabled = true;
+      try {
+        const r = await api("/api/portfolio/pull/apply", { method: "POST", body: JSON.stringify({ pull_id: preview.pull_id, choices }) });
+        pull.body.innerHTML = box("16,185,129", `<p style="font-size:13px; margin:0;">✅ Pulled: ${r.added} added, ${r.updated} updated, ${r.deleted} deleted${r.kept ? `, ${r.kept} kept as they were` : ""}${r.skipped ? ` · ${r.skipped} left for later` : ""}.<br>Publish to Portfolio to clear them from the inbox.</p>`);
+        pull.footer.innerHTML = `<button class="btn btn-primary" onclick="location.reload()">Reload vault</button>`;
+      } catch (err) {
+        pull.body.insertAdjacentHTML("afterbegin", box("244,63,94", `<p style="font-size:12px; margin:0;">⚠ ${esc(err.message)}</p>`));
+        ev.currentTarget.disabled = false;
+      }
+    });
+  }
+
   // ------------------------------------------------------------------ Buttons
   function addButtons() {
     const anchor = document.getElementById("btn-page-sync-vault");
@@ -237,7 +317,12 @@
     li.className = "btn btn-secondary btn-sm";
     li.innerHTML = "<span style='background:#0a66c2;color:#fff;border-radius:3px;padding:0 4px;font-weight:800;'>in</span> Import LinkedIn";
     li.addEventListener("click", () => { linkedin.open(); renderLinkedInStart(); });
-    anchor.after(pub, li);
+    const pl = document.createElement("button");
+    pl.id = "btn-portfolio-pull";
+    pl.className = "btn btn-secondary btn-sm";
+    pl.textContent = "⬇ Pull from Portfolio";
+    pl.addEventListener("click", () => { pull.open(); renderPull(); });
+    anchor.after(pub, pl, li);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addButtons);
